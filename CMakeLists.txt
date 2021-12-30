@@ -17,8 +17,8 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
-find_package(OpenCV 4.5 REQUIRED COMPONENTS core imgproc highgui dnn)
 
+find_package(OpenCV 4.5.4 REQUIRED COMPONENTS highgui objdetect imgproc imgcodecs dnn face)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -119,8 +119,8 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
   /usr/local/include/opencv4/
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -137,7 +137,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(${PROJECT_NAME}_node src/bones_image_node.cpp)
+add_executable(${PROJECT_NAME}_node src/bones_image_node.cpp src/myFace.cpp src/myIO.cpp)
 
 ## Rename C++ executable without prefix
 
@@ -153,8 +153,8 @@ add_executable(${PROJECT_NAME}_node src/bones_image_node.cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_node
-   ${catkin_LIBRARIES}
-   ${OpenCV_LIBS}
+  ${OpenCV_LIBS}
+  ${catkin_LIBRARIES}
  )
 
 #############
