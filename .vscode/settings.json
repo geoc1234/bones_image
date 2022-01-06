@@ -39,5 +39,7 @@
         "tuple": "cpp",
         "typeinfo": "cpp",
         "utility": "cpp"
-    }
+    },
+    "search.useGlobalIgnoreFiles": true,
+    "git.ignoreSubmodules": true
 }
