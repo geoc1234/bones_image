@@ -1,0 +1,8 @@
+prefix=/home/geo/catkin_ws/src/bones_image/build/devel
+
+Name: bones_image
+Description: Description of bones_image
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
