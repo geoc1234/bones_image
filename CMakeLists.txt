@@ -8,11 +8,13 @@ project(bones_image)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  message_generation
   geometry_msgs
+  mbf_msgs
   roscpp
   rospy
-  sensor_msgs
   std_msgs
+  tf2_ros
 )
 
 ## System dependencies are found with CMake's conventions
@@ -57,11 +59,10 @@ find_package(OpenCV 4.5.4 REQUIRED COMPONENTS highgui objdetect imgproc imgcodec
 # )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+ add_service_files(
+   FILES
+   bones_image.srv
+ )
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -71,10 +72,11 @@ find_package(OpenCV 4.5.4 REQUIRED COMPONENTS highgui objdetect imgproc imgcodec
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   geometry_msgs#   sensor_msgs#   std_msgs
-# )
+ generate_messages(
+   DEPENDENCIES
+   geometry_msgs
+   std_msgs
+ )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -108,7 +110,7 @@ find_package(OpenCV 4.5.4 REQUIRED COMPONENTS highgui objdetect imgproc imgcodec
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES bones_image
-#  CATKIN_DEPENDS geometry_msgs roscpp rospy sensor_msgs std_msgs
+   CATKIN_DEPENDS message_runtime geometry_msgs roscpp rospy sensor_msgs std_msgs
 #  DEPENDS system_lib
 )
 
@@ -138,6 +140,8 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}_node src/bones_image_node.cpp src/myFace.cpp src/myIO.cpp)
+add_executable(${PROJECT_NAME}_server src/bones_image_server.cpp src/myFace.cpp src/myIO.cpp)
+add_executable(${PROJECT_NAME}_client src/bones_image_client.cpp src/myFace.cpp src/myIO.cpp)
 
 ## Rename C++ executable without prefix
 
@@ -156,7 +160,10 @@ target_link_libraries(${PROJECT_NAME}_node
   ${OpenCV_LIBS}
   ${catkin_LIBRARIES}
  )
-
+ target_link_libraries(${PROJECT_NAME}_server   ${OpenCV_LIBS} ${catkin_LIBRARIES})
+ add_dependencies(${PROJECT_NAME}_server ${PROJECT_NAME}_gencpp)
+ target_link_libraries(${PROJECT_NAME}_client   ${OpenCV_LIBS} ${catkin_LIBRARIES})
+ add_dependencies(${PROJECT_NAME}_client ${PROJECT_NAME}_gencpp)
 #############
 ## Install ##
 #############
